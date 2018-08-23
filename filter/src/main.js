@@ -4,9 +4,11 @@ import router from './router'
 import store from './store'
 import iview from 'iview'
 import 'iview/dist/styles/iview.css'
+import vueFunc from './assets/js/VueFunction.js'
 
 Vue.use(iview)
 Vue.config.productionTip = false
+Vue.prototype.vueFunc = vueFunc
 
 new Vue({
     router,
