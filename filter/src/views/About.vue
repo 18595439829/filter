@@ -7,32 +7,32 @@
 </template>
 <script>
 export default {
-  name: 'about',
-  data () {
+  name: "about",
+  data() {
     return {
       RMB: 1,
-      emailIpt: '',
-      netIpt: ''
-    }
+      emailIpt: "",
+      netIpt: ""
+    };
   },
   computed: {
-    emailValue () {
-      return this.vueFunc.changeEmail(this.emailIpt)
+    emailValue() {
+      return this.vueFunc.changeEmail(this.emailIpt);
     },
-    netValue () {
-      return this.vueFunc.changeNet(this.netIpt)
+    netValue() {
+      return this.vueFunc.changeNet(this.netIpt);
     }
   },
   filters: {
     capitalize: function(value) {
-      if (!value) return ''
-      value = value.toString()
-      if (value == '1') {
-        return '男'
+      if (!value) return "";
+      value = value.toString();
+      if (value == "1") {
+        return "男";
       } else {
-        return '女'
+        return "女";
       }
     }
   }
-}
+};
 </script>
