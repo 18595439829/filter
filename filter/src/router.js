@@ -32,6 +32,12 @@ export default new Router({
             name: "canvas",
             component: () =>
                 import ("./views/canvas.vue")
+        },
+        {
+            path: "/3dView",
+            name: "3dView",
+            component: () =>
+                import ("./views/3dView.vue")
         }
     ]
 });

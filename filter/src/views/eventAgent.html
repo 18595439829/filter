@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>事件委托测试</title>
+</head>
+
+<body>
+    <style type="text/css">
+        .red {
+            background: red;
+        }
+    </style>
+    <div>
+        <ul>
+            <li><a>测试1</a></li>
+            <li><a>测试2</a></li>
+            <li><a>测试3</a></li>
+            <li><a>测试4</a></li>
+            <li><a>测试5</a></li>
+            <li><a>测试6</a></li>
+            <li><a>测试7</a></li>
+            <li><a>测试8</a></li>
+        </ul>
+    </div>
+    <div>
+        <input onclick="myAlert()" type="button" value="点击我，弹出警告框" />
+    </div>
+</body>
+
+</html>
+<script type="text/javascript">
+    document.getElementsByTagName("ul")[0].addEventListener('click', function(e) {
+        console.log('e', e)
+        e.target.className = 'red';
+        alert("点击的内容是：" + e.target.innerHTML);
+    });
+
+    function myAlert() {
+        alert("谢谢支持");
+    }
+</script>
