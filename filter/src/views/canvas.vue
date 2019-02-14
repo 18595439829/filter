@@ -4,6 +4,7 @@
     <Transfer :data="data1"
               :titles="['坐席列表', '已分配坐席列表']"
               filterable
+              :filter-method="filterMethod"
               :target-keys="targetKeys1"
               :render-format="render1"
               @on-change="handleChange1"
@@ -12,6 +13,9 @@
             size="small">实例</Button>
     <div>
       {{testArr}}
+    </div>
+    <div>
+      {{setArr}}
     </div>
   </div>
 </template>
@@ -34,7 +38,30 @@ export default {
         { key: '0012', name: '34526', number: '100012' }
       ],
       targetKeys1: [],
-      testArr: []
+      testArr: [],
+      setArrInit: [
+        {
+          name: '一号',
+          num: '001'
+        },
+        {
+          name: '一号',
+          num: '001'
+        },
+        {
+          name: '二号',
+          num: '002'
+        },
+        {
+          name: '三号',
+          num: '003'
+        }
+      ]
+    }
+  },
+  computed: {
+    setArr() {
+      return Array.from(new Set(this.setArrInit))
     }
   },
   methods: {
@@ -48,8 +75,7 @@ export default {
       console.log(moveKeys)
       this.targetKeys1 = newTargetKeys
     },
-    selectChange (sourceSelectedKeys, targetSelectedKeys) {
-    },
+    selectChange(sourceSelectedKeys, targetSelectedKeys) {},
     numberRankLeft() {
       console.log('左侧按工号排序')
     },
@@ -62,16 +88,21 @@ export default {
     nameRankRight() {
       console.log('右侧按姓名排序')
     },
-     //左侧  按工号排序
-    rankFuncNumLeft( way, numArray) {
+    filterMethod(data, query) {
+      console.log(query)
+      return data
+      // return data.label.indexOf(query) > -1
+    },
+    //左侧  按工号排序
+    rankFuncNumLeft(way, numArray) {
       //   way:  排序方式对应数组的key;  numArray: 总数组
       let wayArr = []
-      for (let j = 0; j < numArray.length; j++) {       
-            wayArr.push(numArray[j][way])
+      for (let j = 0; j < numArray.length; j++) {
+        wayArr.push(numArray[j][way])
       }
       wayArr.sort((a, b) => {
         return a - b
-      })     
+      })
       let resultArr = []
       for (let l = 0; l < wayArr.length; l++) {
         for (let k = 0; k < numArray.length; k++) {
@@ -83,13 +114,18 @@ export default {
       return resultArr
     },
     // 按姓名排序
-    rankFuncNameLeft( way, numArray) {
+    rankFuncNameLeft(way, numArray) {
       //   way:  排序方式对应数组的key;  numArray: 总数组
+       console.log(numArray)
       let wayArr = []
-      for (let j = 0; j < numArray.length; j++) {       
-            wayArr.push(numArray[j][way])
-      }    
-      wayArr.sort(function(a,b){return a.localeCompare(b)}) 
+      for (let j = 0; j < numArray.length; j++) {
+        wayArr.push(numArray[j][way])
+      }
+      console.log(wayArr)
+      wayArr.sort(function(a, b) {
+        return a.localeCompare(b)
+      })
+      console.log(wayArr)
       let resultArr = []
       for (let l = 0; l < wayArr.length; l++) {
         for (let k = 0; k < numArray.length; k++) {
@@ -98,6 +134,7 @@ export default {
           }
         }
       }
+      console.log(resultArr)
       return resultArr
     },
     //右侧  按工号排序
@@ -142,7 +179,9 @@ export default {
         }
       }
       wayArr = Array.from(new Set(wayArr))
-      wayArr.sort(function(a,b){return a.localeCompare(b)})
+      wayArr.sort(function(a, b) {
+        return a.localeCompare(b)
+      })
       console.log('按姓名排序', wayArr)
       let resultArr = []
       for (let l = 0; l < wayArr.length; l++) {
@@ -166,22 +205,17 @@ export default {
   },
   mounted() {
     this.testArrRank()
-    // console.log(document.getElementsByClassName('ivu-transfer-list-search'))
-    document.getElementsByClassName('ivu-transfer-list-search')[0].innerHTML =
-      "<div><button type='button' class='ivu-btn ivu-btn-default ivu-btn-small numberRankLeft' @click='numberRankLeft'>按工号排序</button><button type='button' style='margin-left: 5px;'  class='ivu-btn ivu-btn-default ivu-btn-small nameRankLeft'  @click='nameRankLeft'>按姓名排序</button></div>"
-    document.getElementsByClassName('ivu-transfer-list-search')[1].innerHTML =
-      "<div><button  type='button' class='ivu-btn ivu-btn-default ivu-btn-small numberRankRight' @click='numberRankRight'>按工号排序</button><button  type='button' style='margin-left: 5px;' class='ivu-btn ivu-btn-default ivu-btn-small' @click='nameRankRight'>按姓名排序</button></div>"
-    document.getElementsByClassName('ivu-transfer-list-search')[1].innerHTML =
-      "<div><button  type='button' class='ivu-btn ivu-btn-default ivu-btn-small numberRankRight' @click='numberRankRight'>按工号排序</button><button  type='button' style='margin-left: 5px;' class='ivu-btn ivu-btn-default ivu-btn-small nameRankRight' @click='nameRankRight'>按姓名排序</button></div>"
+    console.log(document.getElementsByClassName('ivu-transfer-list-search'))
+    document.getElementsByClassName('ivu-transfer-list-search')[0].innerHTML +=
+      "<div style='margin:5px 0;'><button type='button' class='ivu-btn ivu-btn-default ivu-btn-small numberRankLeft' @click='numberRankLeft'>按工号排序</button><button type='button' style='margin-left: 5px;'  class='ivu-btn ivu-btn-default ivu-btn-small nameRankLeft'  @click='nameRankLeft'>按姓名排序</button></div>"
+    document.getElementsByClassName('ivu-transfer-list-search')[1].innerHTML +=
+      "<div style='margin:5px 0;'><button  type='button' class='ivu-btn ivu-btn-default ivu-btn-small numberRankRight' @click='numberRankRight'>按工号排序</button><button  type='button' style='margin-left: 5px;' class='ivu-btn ivu-btn-default ivu-btn-small nameRankRight' @click='nameRankRight'>按姓名排序</button></div>"
     // console.log(document.getElementsByClassName('numberRankLeft')[0])
     document
       .getElementsByClassName('numberRankLeft')[0]
       .addEventListener('click', () => {
         console.log('左侧按工号排序', this.data1)
-        this.data1 = this.rankFuncNumLeft(
-          'number',
-          this.data1
-        )
+        this.data1 = this.rankFuncNumLeft('number', this.data1)
         // this.targetKeys1 = this.targetKeys1
         console.log('111', this.data1)
       })
@@ -189,10 +223,7 @@ export default {
       .getElementsByClassName('nameRankLeft')[0]
       .addEventListener('click', () => {
         console.log('左侧按姓名排序')
-        this.data1 = this.rankFuncNameLeft(
-          'name',
-          this.data1
-        )
+        this.data1 = this.rankFuncNameLeft('name', this.data1)
       })
     document
       .getElementsByClassName('numberRankRight')[0]
@@ -221,6 +252,9 @@ export default {
 <style>
 .transfer {
   margin: 50px;
+}
+.ivu-transfer-list-content {
+  margin-top: 30px;
 }
 canvas {
   position: absolute;
